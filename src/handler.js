@@ -1,4 +1,4 @@
-const { nanoid } = require('nanoid');
+const {nanoid} = require('nanoid');
 const books = require('./books');
 
 const addBookHandler = (request, h) => {
@@ -81,6 +81,29 @@ const addBookHandler = (request, h) => {
 
 };
 
+const getAllBooksHandler = (request, h) => {
+    const resultData = [];
+
+    books.forEach((book) => {
+        resultData.push({
+            id: book.id,
+            name: book.name,
+            publisher: book.publisher
+        });
+    })
+
+    const response = h.response({
+        status: 'success',
+        data: {
+            books: resultData
+        }
+    });
+
+    response.code(200);
+    return response;
+}
+
 module.exports = {
     addBookHandler,
+    getAllBooksHandler
 };
