@@ -82,9 +82,29 @@ const addBookHandler = (request, h) => {
 };
 
 const getAllBooksHandler = (request, h) => {
+    const { name, reading, finished } = request.query;
+
     const resultData = [];
 
-    books.forEach((book) => {
+    const queryResult = books.filter((book) => {
+        let condition = true;
+
+        if (name !== undefined) {
+            condition = condition && book.name.toLowerCase().includes(name.toLowerCase());
+        }
+
+        if (reading !== undefined) {
+            condition = condition && book.reading == reading;
+        }
+
+        if (finished !== undefined) {
+            condition = condition && book.finished == finished;
+        }
+
+        return condition;
+    })
+
+    queryResult.forEach((book) => {
         resultData.push({
             id: book.id,
             name: book.name,
